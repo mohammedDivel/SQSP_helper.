@@ -1,0 +1,2799 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام دعم العملاء المتقدم - الذكاء الاصطناعي الكمي</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --secondary-dark: #059669;
+            --accent: #f59e0b;
+            --accent-dark: #d97706;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: rgba(0, 0, 0, 0.1);
+            --text-primary: #1f2937;
+            --text-dark: #f9fafb;
+            --quantum-blue: #00ffff;
+            --neural-purple: #a855f7;
+            --security-red: #ef4444;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(120deg, #e0e7ff, #d1d5db, #f3e8ff);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+        
+        body.dark-mode {
+            background: linear-gradient(120deg, #1e1b4b, #312e81, #3730a3);
+            color: var(--text-dark);
+        }
+        
+        .quantum-bg {
+            background: linear-gradient(45deg, #000428, #004e92, #000428);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quantum-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(167, 85, 247, 0.1) 0%, transparent 50%);
+            animation: quantum-pulse 15s infinite alternate;
+        }
+        
+        @keyframes quantum-pulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+        
+        .quantum-glow {
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 40px rgba(167, 85, 247, 0.3);
+        }
+        
+        .neural-glow {
+            box-shadow: 0 0 25px rgba(167, 85, 247, 0.5), 0 0 50px rgba(167, 85, 247, 0.2);
+        }
+        
+        .security-glow {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5), 0 0 40px rgba(239, 68, 68, 0.3);
+        }
+        
+        .glass-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
+            border-radius: 16px;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--secondary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-quantum {
+            background: linear-gradient(45deg, var(--quantum-blue), var(--neural-purple));
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-quantum:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 255, 255, 0.4), 0 0 30px rgba(167, 85, 247, 0.3);
+        }
+        
+        textarea, select, input {
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.2s ease;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            color: var(--text-primary);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .dark-mode textarea, 
+        .dark-mode select, 
+        .dark-mode input {
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        textarea:focus, select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(79, 70, 229, 0.9);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .star-rating {
+            color: #e5e7eb;
+        }
+        
+        .star-rating .active {
+            color: #f59e0b;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .response-container {
+            background: rgba(255, 255, 255, 0.15);
+            border-left: 4px solid var(--primary);
+            padding: 16px;
+            border-radius: 12px;
+            line-height: 1.6;
+            white-space: pre-line;
+            backdrop-filter: blur(5px);
+        }
+        
+        .dark-mode .response-container {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .suggestion-chip {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .suggestion-chip:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .dark-mode .suggestion-chip {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+        
+        .dark-mode .suggestion-chip:hover {
+            background: rgba(0, 0, 0, 0.4);
+        }
+        
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        
+        .theme-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .language-switcher, .theme-switcher {
+                position: static;
+                margin-bottom: 15px;
+            }
+        }
+        
+        .complexity-btn {
+            transition: all 0.2s;
+            backdrop-filter: blur(5px);
+        }
+        
+        .complexity-low {
+            background: rgba(220, 252, 231, 0.3);
+            color: #166534;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        .complexity-medium {
+            background: rgba(254, 243, 199, 0.3);
+            color: #92400e;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        
+        .complexity-high {
+            background: rgba(254, 226, 226, 0.3);
+            color: #991b1b;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .loader {
+            border: 3px solid rgba(243, 243, 243, 0.3);
+            border-top: 3px solid #10b981;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .thread-message {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--primary);
+            backdrop-filter: blur(5px);
+        }
+        
+        .dark-mode .thread-message {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .department-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 8px;
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary);
+            border: 1px solid rgba(79, 70, 229, 0.3);
+        }
+        
+        .dark-mode .department-tag {
+            background: rgba(99, 102, 241, 0.3);
+            color: #c7d2fe;
+        }
+        
+        .floating-btn {
+            background: var(--primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4);
+            z-index: 100;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .floating-btn:hover {
+            transform: translateY(-5px) rotate(10deg);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.5);
+        }
+        
+        .response-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+        
+        .api-key-section {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .dark-mode .api-key-section {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .quantum-pattern {
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(167, 85, 247, 0.1) 0%, transparent 25%),
+                linear-gradient(45deg, rgba(0, 0, 0, 0.1) 0%, transparent 50%, rgba(0, 0, 0, 0.1) 100%);
+            background-size: 300% 300%;
+            animation: quantum-shift 20s infinite linear;
+        }
+        
+        @keyframes quantum-shift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        
+        .cyber-security-border {
+            border: 1px solid transparent;
+            background: linear-gradient(45deg, #ef4444, #3b82f6, #10b981) border-box;
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            -webkit-mask-composite: xor;
+        }
+        
+        .holographic-effect {
+            background: linear-gradient(45deg, 
+                rgba(0, 255, 255, 0.1), 
+                rgba(167, 85, 247, 0.1), 
+                rgba(239, 68, 68, 0.1));
+            background-size: 200% 200%;
+            animation: holographic 8s ease infinite;
+        }
+        
+        @keyframes holographic {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body class="min-h-screen quantum-bg">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg relative glass-container neural-glow" style="border-radius: 0 0 20px 20px;">
+        <div class="container mx-auto px-4 py-6 relative z-10">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="text-center md:text-right mb-4 md:mb-0">
+                    <h1 class="text-3xl md:text-4xl font-bold mb-2">نظام دعم العملاء المتقدم - الذكاء الاصطناعي الكمي</h1>
+                    <p class="text-lg opacity-90">نظام ذكي كمي-عصبي لمعالجة سيناريوهات المراسلات المعقدة</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="bg-white bg-opacity-20 rounded-full p-3 glass-container quantum-glow">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Language Switcher -->
+        <div class="language-switcher">
+            <button id="language-btn" class="bg-white bg-opacity-20 text-white py-2 px-4 rounded-lg glass-container">
+                EN
+            </button>
+        </div>
+        
+        <!-- Theme Switcher -->
+        <div class="theme-switcher">
+            <button id="theme-btn" class="bg-white bg-opacity-20 text-white py-2 px-4 rounded-lg glass-container">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Security Notification System -->
+    <div id="security-notification" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+        <div class="glass-card p-6 m-4 w-full max-w-md security-glow">
+            <h3 class="text-xl font-bold mb-4 text-center" id="security-notification-title">طلب إذن الوصول</h3>
+            <p class="mb-4 text-center" id="security-notification-message">يجب السماح لهذا الجهاز باستخدام النظام</p>
+            <div class="flex justify-center space-x-3">
+                <button id="security-allow" class="btn-primary py-2 px-6">السماح</button>
+                <button id="security-deny" class="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded">رفض</button>
+            </div>
+            <div class="mt-4 text-center text-sm" id="security-timer">سيتم إغلاق هذا الإشعار خلال: <span id="countdown">30</span> ثانية</div>
+        </div>
+    </div>
+
+    <!-- 2FA Modal -->
+    <div id="2fa-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+        <div class="glass-card p-6 m-4 w-full max-w-md quantum-glow">
+            <h3 class="text-xl font-bold mb-4 text-center">المصادقة الثنائية</h3>
+            <p class="mb-4 text-center">تم إرسال رمز التحقق إلى بريدك الإلكتروني ورقم هاتفك</p>
+            <div class="flex justify-center space-x-2 mb-4">
+                <input type="text" maxlength="1" class="w-12 h-12 text-center text-xl border rounded" oninput="moveToNext(this)">
+                <input type="text" maxlength="1" class="w-12 h-12 text-center text-xl border rounded" oninput="moveToNext(this)">
+                <input type="text" maxlength="1" class="w-12 h-12 text-center text-xl border rounded" oninput="moveToNext(this)">
+                <input type="text" maxlength="1" class="w-12 h-12 text-center text-xl border rounded" oninput="moveToNext(this)">
+                <input type="text" maxlength="1" class="w-12 h-12 text-center text-xl border rounded" oninput="moveToNext(this)">
+                <input type="text" maxlength="1" class="w-12 h-12 text-center text-xl border rounded">
+            </div>
+            <div class="flex justify-center space-x-3">
+                <button id="verify-2fa" class="btn-primary py-2 px-6">تحقق</button>
+                <button id="resend-2fa" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded">إعادة الإرسال</button>
+            </div>
+            <div class="mt-4 text-center text-sm" id="2fa-timer">يمكنك إعادة الإرسال خلال: <span id="resend-countdown">60</span> ثانية</div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+        <div class="glass-card p-6 m-4 w-full max-w-4xl max-h-screen overflow-y-auto quantum-glow">
+            <h2 class="text-2xl font-bold mb-5 text-center">لوحة تحكم المسؤول</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="p-4 rounded-lg glass-container">
+                    <h3 class="text-lg font-semibold mb-3">إحصائيات الأداء</h3>
+                    <div id="performance-stats"></div>
+                </div>
+                
+                <div class="p-4 rounded-lg glass-container">
+                    <h3 class="text-lg font-semibold mb-3">إدارة النظام</h3>
+                    <div class="space-y-3">
+                        <button onclick="backupSystem.createBackup()" class="w-full btn-primary py-2">
+                            إنشاء نسخة احتياطية
+                        </button>
+                        <button onclick="backupSystem.restoreBackup()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded">
+                            استعادة نسخة احتياطية
+                        </button>
+                        <button onclick="exportAllData()" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded">
+                            تصدير جميع البيانات
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-3">التكامل مع الخدمات الخارجية</h3>
+                <div id="services-integration"></div>
+            </div>
+            
+            <div class="flex justify-end">
+                <button onclick="document.getElementById('admin-panel').classList.add('hidden')" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded">
+                    إغلاق
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!--Main Content -->
+    <main class="container mx-auto px-4 py-8 relative z-10">
+        <!-- Stats Section -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
+            <div class="glass-card p-5 text-center quantum-pattern">
+                <div class="text-blue-600 text-2xl mb-2">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">أمثلة التدريب</h3>
+                <p id="training-count" class="text-2xl font-bold">0</p>
+            </div>
+            <div class="glass-card p-5 text-center quantum-pattern">
+                <div class="text-green-600 text-2xl mb-2">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">مستوى التعلم</h3>
+                <p id="ai-level" class="text-2xl font-bold">مبتدئ</p>
+            </div>
+            <div class="glass-card p-5 text-center quantum-pattern">
+                <div class="text-purple-600 text-2xl mb-2">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">دقة الردود</h3>
+                <p id="accuracy-rate" class="text-2xl font-bold">0%</p>
+            </div>
+            <div class="glass-card p-5 text-center quantum-pattern">
+                <div class="text-cyan-600 text-2xl mb-2">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">مستوى الأمان</h3>
+                <p id="security-level" class="text-2xl font-bold">متوسط</p>
+            </div>
+        </div>
+
+        <!-- Teaching Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+            <!-- Teach AI Card -->
+            <div class="glass-card p-6 quantum-pattern">
+                <div class="flex items-center mb-5 pb-3 border-b border-gray-100 border-opacity-20">
+                    <div class="bg-blue-100 p-2 rounded-full mr-3 glass-container quantum-glow">
+                        <i class="fas fa-graduation-cap text-blue-600 text-xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold">درّب الذكاء الاصطناعي</h2>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">مشكلة العميل (بالإنجليزية)</label>
+                        <textarea 
+                            id="customer-issue" 
+                            placeholder="Paste the customer's email or issue here in English..."
+                            class="w-full px-4 py-3 rounded-lg resize-none"
+                            rows="4"
+                        ></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">ردك (بالإنجليزية)</label>
+                        <textarea 
+                            id="your-response" 
+                            placeholder="Enter your professional response here in English..."
+                            class="w-full px-4 py-3 rounded-lg resize-none"
+                            rows="4"
+                        ></textarea>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="w-full">
+                            <label class="block text-sm font-medium mb-2">نوع المشكلة</label>
+                            <select id="issue-type" class="w-full px-4 py-2 rounded-lg">
+                                <option value="technical">Technical</option>
+                                <option value="billing">Billing</option>
+                                <option value="account">Account</option>
+                                <option value="general">General</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="complexity-rating" class="pt-2">
+                        <label class="block text-sm font-medium mb-2">مستوى صعوبة المشكلة</label>
+                        <div class="flex space-x-1">
+                            <button class="complexity-btn complexity-low px-3 py-1 rounded" data-complexity="1">سهلة</button>
+                            <button class="complexity-btn complexity-medium px-3 py-1 rounded" data-complexity="2">متوسطة</button>
+                            <button class="complexity-btn complexity-high px-3 py-1 rounded" data-complexity="3">صعبة</button>
+                        </div>
+                    </div>
+                    
+                    <div id="department-rating" class="pt-2 hidden">
+                        <label class="block text-sm font-medium mb-2">القسم المختص</label>
+                        <select id="department-type" class="w-full px-4 py-2 rounded-lg">
+                            <option value="technical">Technical Support</option>
+                            <option value="billing">Billing Department</option>
+                            <option value="sales">Sales Team</option>
+                            <option value="management">Management</option>
+                            <option value="other">Other Department</option>
+                        </select>
+                    </div>
+                    
+                    <button 
+                        id="teach-ai-btn"
+                        class="w-full btn-primary font-semibold py-3 px-4 rounded-lg flex items-center justify-center btn-quantum"
+                    >
+                        <i class="fas fa-plus-circle mr-2"></i>
+                        أضف إلى بيانات التدريب
+                    </button>
+                </div>
+            </div>
+
+            <!-- Generate Response Card -->
+            <div class="glass-card p-6 quantum-pattern">
+                <div class="flex items-center mb-5 pb-3 border-b border-gray-100 border-opacity-20">
+                    <div class="bg-green-100 p-2 rounded-full mr-3 glass-container quantum-glow">
+                        <i class="fas fa-magic text-green-600 text-xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold">توليد رد</h2>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">سلسلة المحادثة (بالإنجليزية)</label>
+                        <div id="email-thread" class="space-y-3 mb-3 max-h-40 overflow-y-auto p-2 rounded-lg bg-gray-100 bg-opacity-30">
+                            <div class="text-center text-gray-500 py-4">
+                                <i class="fas fa-comments text-2xl mb-2"></i>
+                                <p>ستظهر هنا سلسلة المحادثة بعد إضافتها</p>
+                            </div>
+                        </div>
+                        <button id="add-email-btn" class="w-full bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center mb-3">
+                            <i class="fas fa-plus mr-2"></i>
+                            إضافة رسالة إلى السلسلة
+                        </button>
+                        <textarea 
+                            id="new-issue" 
+                            placeholder="Or paste the new customer issue here in English..."
+                            class="w-full px-4 py-3 rounded-lg resize-none"
+                            rows="3"
+                        ></textarea>
+                    </div>
+                    
+                    <div id="suggestions-container" class="hidden">
+                        <label class="block text-sm font-medium mb-2">اقتراحات سريعة:</label>
+                        <div id="suggestions" class="flex flex-wrap"></div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">نمط الرد</label>
+                            <select id="response-style" class="w-full px-4 py-2 rounded-lg">
+                                <option value="professional">Professional</option>
+                                <option value="friendly">Friendly</option>
+                                <option value="empathetic">Empathetic</option>
+                                <option value="formal">Formal</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">مستوى التفصيل</label>
+                            <select id="response-detail" class="w-full px-4 py-2 rounded-lg">
+                                <option value="short">Short</option>
+                                <option value="medium">Medium</option>
+                                <option value="detailed">Detailed</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- API Key Section -->
+                    <div class="api-key-section hidden" id="api-key-section">
+                        <label class="block text-sm font-medium mb-2">مفتاح API (اختياري)</label>
+                        <input 
+                            type="password" 
+                            id="api-key" 
+                            placeholder="أدخل مفتاح API لتحسين جودة الردود..."
+                            class="w-full px-4 py-2 rounded-lg"
+                        >
+                        <p class="text-xs text-gray-500 mt-2">استخدام API اختياري لتحسين جودة الردود باستخدام ذكاء اصطناعي متقدم</p>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button 
+                            id="generate-btn"
+                            class="flex-1 btn-secondary font-semibold py-3 px-4 rounded-lg flex items-center justify-center btn-quantum"
+                        >
+                            <i class="fas fa-wand-magic-sparkles mr-2"></i>
+                            توليد رد
+                        </button>
+                        <button 
+                            id="copy-btn"
+                            class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center"
+                            disabled
+                        >
+                            <i class="fas fa-copy mr-2"></i>
+                            نسخ
+                        </button>
+                    </div>
+                    
+                    <div class="mt-4 p-4 rounded-lg min-h-[120px] glass-container quantum-pattern">
+                        <label class="block text-sm font-medium mb-2">الرد المُولد بالذكاء الاصطناعي (بالإنجليزية)</label>
+                        <div id="ai-response" class="italic">
+                            Your AI-generated response will appear here...
+                        </div>
+                        
+                        <!--Response Actions -->
+                        <div class="response-actions hidden" id="response-actions">
+                            <button 
+                                id="delete-response-btn"
+                                class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center"
+                            >
+                                <i class="fas fa-trash mr-2"></i>
+                                حذف الرد
+                            </button>
+                            <button 
+                                id="replace-response-btn"
+                                class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center"
+                            >
+                                <i class="fas fa-sync-alt mr-2"></i>
+                                استبدال الرد
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex items-center justify-between pt-3 border-t border-gray-100 border-opacity-20">
+                        <div>
+                            <span class="text-sm font-medium">قيم هذا الرد:</span>
+                            <div class="flex mt-1 star-rating">
+                                <i class="fas fa-star text-gray-300 cursor-pointer mx-1" data-rating="1"></i>
+                                <i class="fas fa-star text-gray-300 cursor-pointer mx-1" data-rating="2"></i>
+                                <i class="fas fa-star text-gray-300 cursor-pointer mx-1" data-rating="3"></i>
+                                <i class="fas fa-star text-gray-300 cursor-pointer mx-1" data-rating="4"></i>
+                                <i class="fas fa-star text-gray-300 cursor-pointer mx-1" data-rating="5"></i>
+                            </div>
+                        </div>
+                        <button id="save-feedback" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded text-sm">
+                            حفظ التقييم
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Content Analysis Section -->
+        <div class="glass-card p-6 mb-8 quantum-pattern hidden" id="content-analysis-section">
+            <h2 class="text-xl font-bold mb-5 pb-3 border-b border-gray-100 border-opacity-20 flex items-center">
+                <i class="fas fa-chart-pie text-blue-600 mr-2"></i>
+                تحليل المحتوى
+            </h2>
+            
+            <div class="mb-4">
+                <h3 class="font-semibold mb-2">المواضيع الرئيسية:</h3>
+                <div id="main-topics-list" class="space-y-2"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-blue-100 text-blue-800 p-4 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle text-xl mr-2"></i>
+                        <h3 class="font-semibold">الأولوية العامة</h3>
+                    </div>
+                    <p class="text-2xl font-bold mt-2" id="overall-priority">-</p>
+                </div>
+                
+                <div class="bg-green-100 text-green-800 p-4 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-comment-alt text-xl mr-2"></i>
+                        <h3 class="font-semibold">المشاعر</h3>
+                    </div>
+                    <p class="text-2xl font-bold mt-2" id="content-sentiment">-</p>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <h3 class="font-semibold mb-2">الأجزاء المحددة:</h3>
+                <div id="content-segments" class="space-y-3"></div>
+            </div>
+        </div>
+
+        <!-- Predictive Analytics Section -->
+        <div class="glass-card p-6 mb-8 quantum-pattern hidden" id="predictive-analytics">
+            <h2 class="text-xl font-bold mb-5 pb-3 border-b border-gray-100 border-opacity-20 flex items-center">
+                <i class="fas fa-crystal-ball text-purple-600 mr-2"></i>
+                التنبؤات الاستباقية
+            </h2>
+            
+            <div class="mb-4">
+                <h3 class="font-semibold mb-3">المشاكل المتوقعة خلال الأسبوع القادم</h3>
+                <div id="predictive-issues" class="space-y-3">
+                    <div class="text-center py-4 text-gray-500">
+                        <i class="fas fa-chart-line text-2xl mb-2"></i>
+                        <p>جاري تحليل البيانات للتنبؤ بالمشاكل المستقبلية...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-blue-50 p-4 rounded-lg">
+                <h3 class="font-semibold mb-2">الإجراءات الوقائية الموصى بها</h3>
+                <div id="preventive-actions" class="space-y-2"></div>
+            </div>
+        </div>
+
+        <!-- Training Data Section -->
+        <div class="glass-card p-6 mb-8 quantum-pattern">
+            <div class="flex flex-col md:flex-row items-center justify-between mb-5 pb-3 border-b border-gray-100 border-opacity-20">
+                <h2 class="text-xl font-bold flex items-center mb-3 md:mb-0">
+                    <i class="fas fa-history text-purple-600 mr-2"></i>
+                    سجل التدريب
+                </h2>
+                <div class="flex space-x-2">
+                    <button 
+                        id="export-data-btn"
+                        class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded-lg text-sm font-semibold"
+                    >
+                        <i class="fas fa-download mr-1"></i>
+                        تصدير
+                    </button>
+                    <button 
+                        id="import-data-btn"
+                        class="bg-green-500 hover:bg-green-600 text-white py-2 px-3 rounded-lg text-sm font-semibold"
+                    >
+                        <i class="fas fa-upload mr-1"></i>
+                        استيراد
+                    </button>
+                    <button 
+                        id="clear-data-btn"
+                        class="bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded-lg text-sm font-semibold"
+                    >
+                        <i class="fas fa-trash mr-1"></i>
+                        مسح الكل
+                    </button>
+                    <button 
+                        id="toggle-api-btn"
+                        class="bg-purple-500 hover:bg-purple-600 text-white py-2 px-3 rounded-lg text-sm font-semibold"
+                    >
+                        <i class="fas fa-key mr-1"></i>
+                        API
+                    </button>
+                    <button 
+                        id="admin-access-btn"
+                        class="bg-cyan-500 hover:bg-cyan-600 text-white py-2 px-3 rounded-lg text-sm font-semibold"
+                    >
+                        <i class="fas fa-cog mr-1"></i>
+                        Admin
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mb-4 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
+                <input type="text" id="search-issues" placeholder="ابحث في المشكلات..." class="px-3 py-2 rounded-lg flex-1">
+                <select id="filter-type" class="px-3 py-2 rounded-lg">
+                    <option value="all">كل الأنواع</option>
+                    <option value="technical">Technical</option>
+                    <option value="billing">Billing</option>
+                    <option value="account">Account</option>
+                    <option value="general">General</option>
+                </select>
+                <select id="filter-complexity" class="px-3 py-2 rounded-lg">
+                    <option value="0">كل المستويات</option>
+                    <option value="1">سهلة</option>
+                    <option value="2">متوسطة</option>
+                    <option value="3">صعبة</option>
+                </select>
+            </div>
+            
+            <div id="training-history" class="space-y-4 max-h-96 overflow-y-auto p-1">
+                <div class="text-center py-8 text-gray-500">
+                    <i class="fas fa-inbox text-4xl mb-3"></i>
+                    <p>لا توجد بيانات تدريب حتى الآن. ابدأ بتدريب الذكاء الاصطناعي بإضافة أمثلة أعلاه.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div class="glass-card p-6 mb-8 quantum-pattern">
+            <h2 class="text-xl font-bold mb-5 pb-3 border-b border-gray-100 border-opacity-20 flex items-center">
+                <i class="fas fa-chart-bar text-indigo-600 mr-2"></i>
+                التحليلات والأداء
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-4 rounded-lg glass-container quantum-pattern">
+                    <h3 class="text-lg font-semibold mb-3">توزيع أنواع المشكلات</h3>
+                    <canvas id="issue-type-chart" class="h-48"></canvas>
+                </div>
+                <div class="p-4 rounded-lg glass-container quantum-pattern">
+                    <h3 class="text-lg font-semibold mb-3">مستويات الصعوبة</h3>
+                    <canvas id="complexity-chart" class="h-48"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Action Buttons -->
+    <div class="floating-btn" id="assistant-btn">
+        <i class="fas fa-robot text-xl"></i>
+    </div>
+    
+    <button id="admin-btn" class="fixed bottom-32 right-5 bg-purple-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg neural-glow">
+        <i class="fas fa-cog"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 bg-opacity-50 text-white py-6 mt-8 glass-container neural-glow" style="border-radius: 20px 20px 0 0;">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-3">نظام دعم العملاء المتقدم - الذكاء الاصطناعي الكمي v5.0</p>
+            <div class="flex justify-center space-x-5">
+                <a href="#" class="hover:text-blue-400 transition duration-200">
+                    <i class="fab fa-github text-xl"></i>
+                </a>
+                <a href="#" class="hover:text-blue-400 transition duration-200">
+                    <i class="fab fa-twitter text-xl"></i>
+                </a>
+                <a href="#" class="hover:text-blue-400 transition duration-200">
+                    <i class="fab fa-linkedin text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Email Thread Modal -->
+    <div id="email-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="glass-card p-6 m-4 w-full max-w-2xl quantum-glow">
+            <h3 class="text-xl font-bold mb-4">إضافة رسالة إلى السلسلة</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">مرسل الرسالة</label>
+                    <select id="email-sender" class="w-full px-4 py-2 rounded-lg">
+                        <option value="customer">Customer</option>
+                        <option value="colleague">Colleague</option>
+                        <option value="other">Other Department</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">نص الرسالة (بالإنجليزية)</label>
+                    <textarea 
+                        id="email-content" 
+                        class="w-full px-4 py-3 rounded-lg resize-none"
+                        rows="4"
+                        placeholder="Enter the email content here..."
+                    ></textarea>
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button id="cancel-email" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded">
+                        إلغاء
+                    </button>
+                    <button id="save-email" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                        إضافة إلى السلسلة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="import-file" accept=".json" style="display: none;">
+    
+    <script>
+        // ========== النظام الأساسي والتهيئة ==========
+        // Training data storage with enhanced structure
+        let trainingData = JSON.parse(localStorage.getItem('aiTrainingData')) || [];
+        let aiFeedback = JSON.parse(localStorage.getItem('aiFeedback')) || [];
+        let emailThread = [];
+        let aiLevels = ['مبتدئ', 'متوسط', 'متقدم', 'خبير', 'متمكن'];
+        let complexityLevels = ['', 'سهلة', 'متوسطة', 'صعبة'];
+        let issueTypes = {
+            'technical': 'Technical',
+            'billing': 'Billing', 
+            'account': 'Account',
+            'general': 'General'
+        };
+
+        // Advanced response templates
+        const advancedTemplates = {
+            greeting: [
+                "Dear [Customer Name],",
+                "Hello [Customer Name],",
+                "Hi [Customer Name],",
+                "Good day [Customer Name],"
+            ],
+            empathy: [
+                "I completely understand how frustrating this situation must be for you.",
+                "I can imagine how concerning this issue is, and I appreciate you bringing it to our attention.",
+                "Thank you for your patience as we work to resolve this matter for you.",
+                "I realize this has caused significant inconvenience, and I sincerely apologize for that.",
+                "I know how important this is for you, and I want to assure you that we're taking it very seriously."
+            ],
+            collaboration: [
+                "I'll personally oversee this issue to ensure it's resolved to your satisfaction.",
+                "Let's work together to find the best solution for you.",
+                "I'll be your dedicated point of contact until this matter is fully resolved.",
+                "We're committed to making this right for you, and I'll keep you updated every step of the way.",
+                "I want to assure you that our team is already looking into this and we'll have updates for you shortly."
+            ],
+            solution: [
+                "Based on my analysis of your situation and previous communications, I recommend the following approach:",
+                "After reviewing the complete thread and similar cases, I've found that the most effective solution is:",
+                "Here's what we can do to resolve this effectively based on the history of this issue:",
+                "I suggest we proceed with the following steps, building on the previous interactions:",
+                "Based on our experience with similar issues and the context of this conversation, here's the best course of action:"
+            ],
+            reassurance: [
+                "I want to assure you that this is a temporary situation and we're already working on a permanent fix.",
+                "Please know that we're treating this with the highest priority it deserves.",
+                "Our team has successfully resolved similar issues in the past, and I'm confident we can do the same for you.",
+                "I'll make sure this gets the attention it needs from our technical team.",
+                "We value your business and are committed to ensuring your complete satisfaction."
+            ],
+            escalation: [
+                "After reviewing the complete thread, I believe this issue would be best handled by our [Department] team.",
+                "To ensure you receive the most specialized assistance, I'm going to escalate this to our [Department] department.",
+                "Based on the complexity of this issue, I'm connecting you with our [Department] team who are experts in this area.",
+                "I've reviewed the entire conversation and determined that our [Department] department is best equipped to help you.",
+                "To provide you with the most comprehensive support, I'm involving our [Department] team in this matter."
+            ],
+            closer: [
+                "Best regards,\n[Your Name]\nCustomer Support Team",
+                "Sincerely,\n[Your Name]\nCustomer Support Team",
+                "Warm regards,\n[Your Name]\nCustomer Support Team",
+                "Thank you for your understanding,\n[Your Name]\nCustomer Support Team",
+                "We appreciate your business,\n[Your Name]\nCustomer Support Team"
+            ]
+        };
+
+        //DOM Elements
+        const customerIssueInput = document.getElementById('customer-issue');
+        const yourResponseInput = document.getElementById('your-response');
+        const newIssueInput = document.getElementById('new-issue');
+        const aiResponseOutput = document.getElementById('ai-response');
+        const trainingHistoryContainer = document.getElementById('training-history');
+        const trainingCountElement = document.getElementById('training-count');
+        const aiLevelElement = document.getElementById('ai-level');
+        const accuracyRateElement = document.getElementById('accuracy-rate');
+        const securityLevelElement = document.getElementById('security-level');
+        const teachAiButton = document.getElementById('teach-ai-btn');
+        const generateButton = document.getElementById('generate-btn');
+        const copyButton = document.getElementById('copy-btn');
+        const clearDataButton = document.getElementById('clear-data-btn');
+        const exportDataButton = document.getElementById('export-data-btn');
+        const importDataButton = document.getElementById('import-data-btn');
+        const importFileInput = document.getElementById('import-file');
+        const searchIssuesInput = document.getElementById('search-issues');
+        const filterTypeSelect = document.getElementById('filter-type');
+        const filterComplexitySelect = document.getElementById('filter-complexity');
+        const issueTypeSelect = document.getElementById('issue-type');
+        const responseStyleSelect = document.getElementById('response-style');
+        const responseDetailSelect = document.getElementById('response-detail');
+        const ratingStars = document.querySelectorAll('[data-rating]');
+        const saveFeedbackButton = document.getElementById('save-feedback');
+        const complexityButtons = document.querySelectorAll('.complexity-btn');
+        const themeButton = document.getElementById('theme-btn');
+        const languageButton = document.getElementById('language-btn');
+        const suggestionsContainer = document.getElementById('suggestions-container');
+        const suggestionsElement = document.getElementById('suggestions');
+        const emailThreadContainer = document.getElementById('email-thread');
+        const addEmailButton = document.getElementById('add-email-btn');
+        const emailModal = document.getElementById('email-modal');
+        const emailSender = document.getElementById('email-sender');
+        const emailContent = document.getElementById('email-content');
+        const saveEmailButton = document.getElementById('save-email');
+        const cancelEmailButton = document.getElementById('cancel-email');
+        const departmentSection = document.getElementById('department-rating');
+        const departmentType = document.getElementById('department-type');
+        const assistantButton = document.getElementById('assistant-btn');
+        const deleteResponseBtn = document.getElementById('delete-response-btn');
+        const replaceResponseBtn = document.getElementById('replace-response-btn');
+        const responseActions = document.getElementById('response-actions');
+        const apiKeySection = document.getElementById('api-key-section');
+        const apiKeyInput = document.getElementById('api-key');
+        const toggleApiBtn = document.getElementById('toggle-api-btn');
+        const adminBtn = document.getElementById('admin-btn');
+        const adminAccessBtn = document.getElementById('admin-access-btn');
+
+        // Initialize
+        let currentComplexity = 2;
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
+        let isEnglish = localStorage.getItem('language') === 'en';
+        let currentGeneratedResponse = '';
+        let useApi = localStorage.getItem('useApi') === 'true';
+        let deviceId = '';
+        let permissionGranted = false;
+        let permissionAttempts = 0;
+        let selfDestructInitiated = false;
+        let fakeResponseMode = true;
+        let securityLevel = 1;
+
+        // ========== نظام الأمان والتصديق ==========
+        const securityNotification = document.getElementById('security-notification');
+        
+        // توليد بصمة الجهاز
+        async function generateDeviceId() {
+            try {
+                const fp = await FingerprintJS.load();
+                const result = await fp.get();
+                deviceId = result.visitorId;
+                console.log('Device ID:', deviceId);
+                
+                // التحقق إذا كان الجهاز مسموحاً به
+                checkDevicePermission();
+            } catch (error) {
+                console.error('Failed to generate device ID:', error);
+                deviceId = 'unknown_' + Math.random().toString(36).substr(2, 9);
+                checkDevicePermission();
+            }
+        }
+
+        // التحقق من إذن الجهاز
+        function checkDevicePermission() {
+            const allowedDevices = JSON.parse(localStorage.getItem('allowedDevices') || '[]');
+            const currentPermission = localStorage.getItem(`device_${deviceId}_permission`);
+            
+            if (allowedDevices.includes(deviceId) && currentPermission === 'granted') {
+                permissionGranted = true;
+                fakeResponseMode = false;
+                securityLevel = 3;
+                updateSecurityLevel();
+                return;
+            }
+            
+            // إذا لم يكن هناك إذن، نبدأ عملية التصديق
+            startPermissionProcess();
+        }
+
+        // بدء عملية التصديق
+        function startPermissionProcess() {
+            if (permissionAttempts >= 10 || selfDestructInitiated) return;
+            
+            permissionAttempts++;
+            const isFirstPhase = permissionAttempts <= 5;
+            const delay = isFirstPhase ? 30000 : 180000; // 30 ثانية أو 3 دقائق
+            
+            setTimeout(() => {
+                showSecurityNotification(isFirstPhase ? 1 : 2);
+            }, delay);
+        }
+
+        // عرض إشعار الأمان
+        function showSecurityNotification(phase) {
+            if (selfDestructInitiated) return;
+            
+            const title = phase === 1 ? 'طلب إذن الوصول - المرحلة الأولى' : 'طلب إذن الوصول - المرحلة الثانية';
+            const message = phase === 1 
+                ? 'هذا هو الإشعار الأول للسماح للجهاز باستخدام النظام. سيظهر 5 إشعارات كل 30 ثانية.' 
+                : 'هذا هو الإشعار الثاني للسماح للجهاز باستخدام النظام. سيظهر 5 إشعارات كل 3 دقائق.';
+            
+            document.getElementById('security-notification-title').textContent = title;
+            document.getElementById('security-notification-message').textContent = message;
+            securityNotification.classList.remove('hidden');
+            
+            let countdown = 30;
+            const countdownElement = document.getElementById('countdown');
+            countdownElement.textContent = countdown;
+            
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                countdownElement.textContent = countdown;
+                
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    securityNotification.classList.add('hidden');
+                    
+                    // إذا انتهى الوقت، نعرض الإشعار التالي بعد التأخير المحدد
+                    if (permissionAttempts < 10) {
+                        startPermissionProcess();
+                    }
+                }
+            }, 1000);
+            
+            // إعداد معالجات الأحداث للأزرار
+            document.getElementById('security-allow').onclick = () => {
+                clearInterval(countdownInterval);
+                grantPermission();
+            };
+            
+            document.getElementById('security-deny').onclick = () => {
+                clearInterval(countdownInterval);
+                denyPermission();
+            };
+        }
+
+        // منح الإذن
+        function grantPermission() {
+            permissionGranted = true;
+            fakeResponseMode = false;
+            securityLevel = 3;
+            securityNotification.classList.add('hidden');
+            
+            // حفظ الجهاز المسموح به
+            const allowedDevices = JSON.parse(localStorage.getItem('allowedDevices') || '[]');
+            if (!allowedDevices.includes(deviceId)) {
+                allowedDevices.push(deviceId);
+                localStorage.setItem('allowedDevices', JSON.stringify(allowedDevices));
+            }
+            
+            localStorage.setItem(`device_${deviceId}_permission`, 'granted');
+            updateSecurityLevel();
+            showNotification('تم منح إذن الوصول بنجاح', 'success');
+        }
+
+        // رفض الإذن
+        function denyPermission() {
+            securityNotification.classList.add('hidden');
+            
+            if (permissionAttempts >= 10 && !selfDestructInitiated) {
+                initiateSelfDestruct();
+                return;
+            }
+            
+            // الاستمرار في عملية التصديق
+            startPermissionProcess();
+        }
+
+        // بدء التدمير الذاتي
+        function initiateSelfDestruct() {
+            selfDestructInitiated = true;
+            securityLevel = 0;
+            updateSecurityLevel();
+            showNotification('تم رفض الوصول، سيتم تدمير النظام ذاتيًا', 'error');
+            
+            // تعطيل جميع الوظائف
+            document.querySelectorAll('button, textarea, input, select').forEach(element => {
+                element.disabled = true;
+            });
+            
+            // إضافة تأثير مرئي للتدمير
+            document.body.style.transition = 'all 2s ease';
+            document.body.style.opacity = '0.5';
+            document.body.style.filter = 'blur(5px)';
+            
+            // مسح جميع البيانات بعد فترة
+            setTimeout(() => {
+                localStorage.clear();
+                sessionStorage.clear();
+                
+                // إظهار رسالة التدمير النهائية
+                document.body.innerHTML = `
+                    <div class="flex flex-col items-center justify-center min-h-screen bg-red-100 text-red-800 p-4 text-center">
+                        <i class="fas fa-shield-alt text-6xl mb-4"></i>
+                        <h1 class="text-2xl font-bold mb-2">تم تعطيل النظام لأسباب أمنية</h1>
+                        <p>تم رفض محاولة الوصول غير المصرح بها. يرجى الاتصال بالدعم الفني.</p>
+                        <p class="mt-4 text-sm">Reference: ${generateSecurityCode()}</p>
+                    </div>
+                `;
+            }, 5000);
+        }
+
+        function generateSecurityCode() {
+            return Math.random().toString(36).substr(2, 8).toUpperCase();
+        }
+
+        function updateSecurityLevel() {
+            let levelText, levelColor;
+            
+            switch(securityLevel) {
+                case 0:
+                    levelText = "معطل";
+                    levelColor = "text-red-600";
+                    break;
+                case 1:
+                    levelText = "منخفض";
+                    levelColor = "text-yellow-600";
+                    break;
+                case 2:
+                    levelText = "متوسط";
+                    levelColor = "text-blue-600";
+                    break;
+                case 3:
+                    levelText = "عالي";
+                    levelColor = "text-green-600";
+                    break;
+                case 4:
+                    levelText = "أقصى";
+                    levelColor = "text-purple-600";
+                    break;
+                default:
+                    levelText = "غير معروف";
+                    levelColor = "text-gray-600";
+            }
+            
+            securityLevelElement.textContent = levelText;
+            securityLevelElement.className = `text-2xl font-bold ${levelColor}`;
+        }
+
+        // ========== نظام معالجة النصوص المتقدم ==========
+        function advancedArticleSegmentation(longText) {
+            const segments = [];
+            const paragraphs = longText.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+            
+            let currentSegment = {
+                title: '',
+                content: '',
+                priority: 0,
+                category: '',
+                keywords: []
+            };
+            
+            // تحليل كل فقرة وتجميعها في أجزاء مترابطة
+            for (let i = 0; i < paragraphs.length; i++) {
+                const paragraph = paragraphs[i];
+                const paragraphKeywords = extractKeywords(paragraph);
+                const paragraphCategory = categorizeParagraph(paragraph);
+                const paragraphPriority = calculatePriority(paragraph);
+                
+                // إذا كانت الفقرة الحالية تتبع نفس فئة وسياق الفقرة السابقة
+                if (i > 0 && shouldMergeWithPrevious(currentSegment, paragraph, paragraphCategory, paragraphKeywords)) {
+                    currentSegment.content += '\n\n' + paragraph;
+                    currentSegment.keywords = mergeKeywords(currentSegment.keywords, paragraphKeywords);
+                    currentSegment.priority = Math.max(currentSegment.priority, paragraphPriority);
+                } else {
+                    // حفظ الجزء السابق وبدء جزء جديد
+                    if (i > 0) {
+                        segments.push({...currentSegment});
+                    }
+                    
+                    // إنشاء عنوان للجزء الجديد
+                    const segmentTitle = generateSegmentTitle(paragraph, paragraphCategory);
+                    
+                    currentSegment = {
+                        title: segmentTitle,
+                        content: paragraph,
+                        priority: paragraphPriority,
+                        category: paragraphCategory,
+                        keywords: paragraphKeywords
+                    };
+                }
+            }
+            
+            // إضافة الجزء الأخير
+            if (currentSegment.content) {
+                segments.push({...currentSegment});
+            }
+            
+            // ترتيب الأجزاء حسب الأولوية
+            return segments.sort((a, b) => b.priority - a.priority);
+        }
+
+        function shouldMergeWithPrevious(segment, paragraph, category, keywords) {
+            if (segment.category !== category) return false;
+            
+            // حساب التشابه بين الكلمات الرئيسية
+            const similarity = calculateSimilarity(segment.keywords, keywords);
+            return similarity >= 0.5;
+        }
+
+        function generateSegmentTitle(paragraph, category) {
+            const sentences = paragraph.split(/[.!?]+/);
+            const firstSentence = sentences[0].trim();
+            
+            if (firstSentence.length <= 80) {
+                return firstSentence;
+            }
+            
+            // استخراج أهم الكلمات للعنوان
+            const keywords = extractKeywords(paragraph).slice(0, 3);
+            return `${category}: ${keywords.join(', ')}`;
+        }
+
+        function calculatePriority(paragraph) {
+            let priority = 0;
+            
+            // زيادة الأولوية للعبارات التي تشير إلى مشاكل عاجلة
+            const urgencyIndicators = [
+                'urgent', 'immediately', 'as soon as possible', 'right away', 
+                'critical', 'emergency', 'not working', 'broken', 'failed',
+                'مستعجل', 'عاجل', 'ضروري', 'لا يعمل', 'تعطل'
+            ];
+            
+            urgencyIndicators.forEach(indicator => {
+                if (paragraph.toLowerCase().includes(indicator.toLowerCase())) {
+                    priority += 3;
+                }
+            });
+            
+            // زيادة الأولوية للأسئلة المباشرة
+            if (paragraph.includes('?')) priority += 1;
+            
+            // زيادة الأولوية للشكاوى
+            const complaintIndicators = [
+                'complaint', 'unhappy', 'disappointed', 'frustrated', 
+                'شكوى', 'غير راض', 'محبط'
+            ];
+            
+            complaintIndicators.forEach(indicator => {
+                if (paragraph.toLowerCase().includes(indicator.toLowerCase())) {
+                    priority += 2;
+                }
+            });
+            
+            return priority;
+        }
+
+        function analyzeEmailContext(emailContent) {
+            const segments = advancedArticleSegmentation(emailContent);
+            const context = {
+                mainTopics: [],
+                urgentIssues: [],
+                requiredActions: [],
+                sentiment: 'neutral',
+                overallPriority: 0
+            };
+            
+            // تحليل كل جزء
+            segments.forEach(segment => {
+                context.mainTopics.push({
+                    title: segment.title,
+                    category: segment.category,
+                    priority: segment.priority
+                });
+                
+                if (segment.priority >= 3) {
+                    context.urgentIssues.push(segment.title);
+                }
+                
+                // استخراج الإجراءات المطلوبة من المحتوى
+                const actions = extractRequiredActions(segment.content);
+                context.requiredActions.push(...actions);
+                
+                // تحديث الأولوية العامة
+                context.overallPriority = Math.max(context.overallPriority, segment.priority);
+            });
+            
+            // تحليل المشاعر العامة
+            context.sentiment = analyzeOverallSentiment(emailContent);
+            
+            return context;
+        }
+
+        function extractRequiredActions(text) {
+            const actions = [];
+            const actionPatterns = [
+                /(?:I need|I want|please|can you|could you)\s+([^.!?]+[.!?])/gi,
+                /(?:أحتاج|أريد|من فضلك|هل يمكنك|يرجى)\s+([^.!?]+[.!?])/gi
+            ];
+            
+            actionPatterns.forEach(pattern => {
+                let match;
+                while ((match = pattern.exec(text)) !== null) {
+                    actions.push(match[1].trim());
+                }
+            });
+            
+            return actions;
+        }
+
+        function displayContentAnalysis(emailContent) {
+            const analysis = analyzeEmailContext(emailContent);
+            const segments = advancedArticleSegmentation(emailContent);
+            
+            // عرض المواضيع الرئيسية
+            const topicsList = document.getElementById('main-topics-list');
+            topicsList.innerHTML = analysis.mainTopics.map(topic => `
+                <div class="flex items-center justify-between">
+                    <span>${topic.title}</span>
+                    <span class="px-2 py-1 rounded-full text-xs ${topic.priority >= 3 ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}">
+                        ${topic.priority >= 3 ? 'عاجل' : 'عادي'}
+                    </span>
+                </div>
+            `).join('');
+            
+            // عرض الأولوية العامة
+            document.getElementById('overall-priority').textContent = 
+                analysis.overallPriority >= 3 ? 'عالية' : analysis.overallPriority >= 2 ? 'متوسطة' : 'منخفضة';
+            
+            // عرض المشاعر
+            document.getElementById('content-sentiment').textContent = 
+                analysis.sentiment === 'positive' ? 'إيجابي' : 
+                analysis.sentiment === 'negative' ? 'سلبي' : 'محايد';
+            
+            // عرض الأجزاء
+            const segmentsContainer = document.getElementById('content-segments');
+            segmentsContainer.innerHTML = segments.map(segment => `
+                <div class="glass-container rounded-lg p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-semibold">${segment.title}</h4>
+                        <span class="text-xs px-2 py-1 rounded-full ${segment.priority >= 3 ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}">
+                            أولوية: ${segment.priority}
+                        </span>
+                    </div>
+                    <p class="text-sm text-gray-600">${segment.content.substring(0, 150)}...</p>
+                    <div class="mt-2 flex flex-wrap">
+                        ${segment.keywords.slice(0, 5).map(keyword => `
+                            <span class="text-xs bg-gray-200 text-gray-800 px-2 py-1 rounded mr-2 mb-2">${keyword}</span>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+            
+            // إظهار قسم التحليل
+            document.getElementById('content-analysis-section').classList.remove('hidden');
+        }
+
+        // ========== نظام الذكاء الاصطناعي الكمي ==========
+        class QuantumNeuralAI {
+            constructor() {
+                this.quantumState = this.initializeQuantumState();
+                this.neuralNetwork = this.initializeNeuralNetwork();
+            }
+            
+            initializeQuantumState() {
+                // محاكاة حالة كمومية أولية
+                return {
+                    qubits: 16,
+                    entanglement: 0.7,
+                    coherence: 0.9,
+                    state: this.generateQuantumWavefunction()
+                };
+            }
+            
+            generateQuantumWavefunction() {
+                // محاكاة دالة موجية كمومية
+                const states = [];
+                for (let i = 0; i < this.quantumState.qubits; i++) {
+                    states.push({
+                        amplitude: Math.random() * 2 - 1,
+                        phase: Math.random() * Math.PI * 2,
+                        probability: Math.random()
+                    });
+                }
+                return states;
+            }
+            
+            initializeNeuralNetwork() {
+                // محاكاة شبكة عصبية كمومية
+                return {
+                    layers: 4,
+                    nodes: [16, 12, 8, 4],
+                    weights: this.generateQuantumWeights(),
+                    activation: 'quantumRelu'
+                };
+            }
+            
+            generateQuantumWeights() {
+                // توليد أوزان كمومية عشوائية
+                const weights = [];
+                for (let i = 0; i < this.neuralNetwork.layers - 1; i++) {
+                    const layerWeights = [];
+                    for (let j = 0; j < this.neuralNetwork.nodes[i] * this.neuralNetwork.nodes[i + 1]; j++) {
+                        layerWeights.push(Math.random() * 2 - 1);
+                    }
+                    weights.push(layerWeights);
+                }
+                return weights;
+            }
+            
+            async processInput(input) {
+                // معالجة الإدخال باستخدام الشبكة الكمومية-العصبية
+                const encodedInput = this.quantumEncode(input);
+                const processed = this.neuralProcess(encodedInput);
+                const result = this.quantumDecode(processed);
+                
+                return result;
+            }
+            
+            quantumEncode(input) {
+                // ترميز الإدخال إلى حالة كمومية
+                const encoded = [];
+                for (let i = 0; i < input.length; i++) {
+                    const charCode = input.charCodeAt(i);
+                    const quantumState = {
+                        amplitude: Math.sin(charCode / 255 * Math.PI),
+                        phase: charCode / 255 * Math.PI * 2,
+                        probability: 0.5
+                    };
+                    encoded.push(quantumState);
+                }
+                return encoded;
+            }
+            
+            neuralProcess(encodedInput) {
+                // معالجة الإدخال المرمز عبر الشبكة العصبية
+                let currentLayer = encodedInput;
+                
+                for (let i = 0; i < this.neuralNetwork.layers - 1; i++) {
+                    const nextLayer = [];
+                    for (let j = 0; j < this.neuralNetwork.nodes[i + 1]; j++) {
+                        let sum = 0;
+                        for (let k = 0; k < this.neuralNetwork.nodes[i]; k++) {
+                            const weightIndex = k * this.neuralNetwork.nodes[i + 1] + j;
+                            sum += currentLayer[k].amplitude * this.neuralNetwork.weights[i][weightIndex];
+                        }
+                        nextLayer.push({
+                            amplitude: this.quantumActivation(sum),
+                            phase: Math.atan2(sum, 1),
+                            probability: Math.abs(sum) / 2
+                        });
+                    }
+                    currentLayer = nextLayer;
+                }
+                
+                return currentLayer;
+            }
+            
+            quantumActivation(x) {
+                // دالة تنشيط كمومية
+                return Math.max(0, x) * (1 + Math.sin(x) * 0.3);
+            }
+            
+            quantumDecode(processed) {
+                // فك ترميز الناتج من الحالة الكمومية
+                let result = '';
+                for (const state of processed) {
+                    const charCode = Math.round((Math.atan2(state.amplitude, 1) + Math.PI) / (2 * Math.PI) * 255);
+                    result += String.fromCharCode(charCode);
+                }
+                return result;
+            }
+            
+            async generateResponse(context, style, detail) {
+                // توليد رد باستخدام الذكاء الاصطناعي الكمي
+                const input = this.prepareInput(context, style, detail);
+                const quantumResponse = await this.processInput(input);
+                const formattedResponse = this.formatResponse(quantumResponse, style);
+                
+                return formattedResponse;
+            }
+            
+            prepareInput(context, style, detail) {
+                // إعداد الإدخال للشبكة الكمومية
+                return JSON.stringify({
+                    context,
+                    style,
+                    detail,
+                    timestamp: Date.now(),
+                    quantumState: this.quantumState
+                });
+            }
+            
+            formatResponse(response, style) {
+                // تنسيق الرد بناءً على النمط المطلوب
+                let formatted = response;
+                
+                switch(style) {
+                    case 'professional':
+                        formatted = this.makeProfessional(formatted);
+                        break;
+                    case 'friendly':
+                        formatted = this.makeFriendly(formatted);
+                        break;
+                    case 'empathetic':
+                        formatted = this.makeEmpathetic(formatted);
+                        break;
+                    case 'formal':
+                        formatted = this.makeFormal(formatted);
+                        break;
+                }
+                
+                return formatted;
+            }
+            
+            makeProfessional(text) {
+                return text.charAt(0).toUpperCase() + text.slice(1);
+            }
+            
+            makeFriendly(text) {
+                return `Hi there! ${text}`;
+            }
+            
+            makeEmpathetic(text) {
+                return `I understand how important this is. ${text}`;
+            }
+            
+            makeFormal(text) {
+                return `Dear Customer,\n\n${text}\n\nSincerely,\nSupport Team`;
+            }
+        }
+
+        // ========== نظام الأمان الكمي ==========
+        class QuantumSecuritySystem {
+            constructor() {
+                this.encryptionKey = this.generateQuantumKey();
+                this.securityLevel = 3;
+            }
+            
+            generateQuantumKey() {
+                // توليد مفتاح تشفير كمومي
+                const key = new Uint32Array(64);
+                for (let i = 0; i < key.length; i++) {
+                    key[i] = Math.floor(Math.random() * 4294967295);
+                }
+                return key;
+            }
+            
+            quantumEncrypt(data) {
+                // تشفير كمومي للبيانات
+                const encoder = new TextEncoder();
+                const dataBuffer = encoder.encode(JSON.stringify(data));
+                const encryptedBuffer = new Uint8Array(dataBuffer.length);
+                
+                for (let i = 0; i < dataBuffer.length; i++) {
+                    const keyIndex = i % this.encryptionKey.length;
+                    const keyByte = this.encryptionKey[keyIndex] & 0xFF;
+                    encryptedBuffer[i] = dataBuffer[i] ^ keyByte;
+                }
+                
+                return Array.from(encryptedBuffer);
+            }
+            
+            quantumDecrypt(encryptedData) {
+                // فك التشفير الكمومي
+                const encryptedBuffer = new Uint8Array(encryptedData);
+                const decryptedBuffer = new Uint8Array(encryptedBuffer.length);
+                
+                for (let i = 0; i < encryptedBuffer.length; i++) {
+                    const keyIndex = i % this.encryptionKey.length;
+                    const keyByte = this.encryptionKey[keyIndex] & 0xFF;
+                    decryptedBuffer[i] = encryptedBuffer[i] ^ keyByte;
+                }
+                
+                const decoder = new TextDecoder();
+                return JSON.parse(decoder.decode(decryptedBuffer));
+            }
+            
+            generateQuantumHash(data) {
+                // توليد هاش كمومي للبيانات
+                const encoder = new TextEncoder();
+                const dataBuffer = encoder.encode(JSON.stringify(data));
+                let hash = 0;
+                
+                for (let i = 0; i < dataBuffer.length; i++) {
+                    const char = dataBuffer[i];
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash; // Convert to 32-bit integer
+                }
+                
+                return hash.toString(16);
+            }
+            
+            verifyQuantumIntegrity(data, originalHash) {
+                // التحقق من سلامة البيانات باستخدام الهاش الكمومي
+                const currentHash = this.generateQuantumHash(data);
+                return currentHash === originalHash;
+            }
+        }
+
+        // ========== نظام النسخ الاحتياطي الكمي ==========
+        class QuantumBackupSystem {
+            constructor() {
+                this.securitySystem = new QuantumSecuritySystem();
+                this.backupInterval = null;
+            }
+            
+            init() {
+                // بدأ النسخ الاحتياطي التلقائي كل ساعة
+                this.backupInterval = setInterval(() => this.createBackup(), 60 * 60 * 1000);
+                
+                // إنشاء نسخة احتياطية أولية
+                this.createBackup();
+            }
+            
+            async createBackup() {
+                try {
+                    const backupData = {
+                        trainingData,
+                        aiFeedback,
+                        settings: this.getSystemSettings(),
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    // تشفير بيانات النسخ الاحتياطي
+                    const encryptedBackup = this.securitySystem.quantumEncrypt(backupData);
+                    const backupHash = this.securitySystem.generateQuantumHash(backupData);
+                    
+                    // حفظ النسخ الاحتياطي
+                    localStorage.setItem('system_backup', JSON.stringify({
+                        data: encryptedBackup,
+                        hash: backupHash
+                    }));
+                    
+                    // الاحتفاظ بعدد محدد من النسخ الاحتياطية
+                    this.rotateBackups();
+                    
+                    console.log('Backup created successfully');
+                } catch (error) {
+                    console.error('Backup failed:', error);
+                }
+            }
+            
+            async restoreBackup(backupId = 'latest') {
+                try {
+                    const backup = localStorage.getItem('system_backup');
+                    if (!backup) throw new Error('No backup found');
+                    
+                    const backupObj = JSON.parse(backup);
+                    const decryptedData = this.securitySystem.quantumDecrypt(backupObj.data);
+                    
+                    // التحقق من سلامة البيانات
+                    if (!this.securitySystem.verifyQuantumIntegrity(decryptedData, backupObj.hash)) {
+                        throw new Error('Backup integrity check failed');
+                    }
+                    
+                    // استعادة البيانات
+                    trainingData = decryptedData.trainingData || [];
+                    aiFeedback = decryptedData.aiFeedback || [];
+                    
+                    // حفظ البيانات المستعادة
+                    localStorage.setItem('aiTrainingData', JSON.stringify(trainingData));
+                    localStorage.setItem('aiFeedback', JSON.stringify(aiFeedback));
+                    
+                    // تحديث الواجهة
+                    updateTrainingCount();
+                    updateTrainingHistory();
+                    updateAiLevel();
+                    updateAccuracyRate();
+                    updateCharts();
+                    
+                    showNotification('تم استعادة النسخة الاحتياطية بنجاح', 'success');
+                    return true;
+                } catch (error) {
+                    console.error('Restore failed:', error);
+                    showNotification('فشل في استعادة النسخة الاحتياطية', 'error');
+                    return false;
+                }
+            }
+            
+            rotateBackups() {
+                // الاحتفاظ بعدد محدد من النسخ الاحتياطية وتدويرها
+                const maxBackups = 5;
+                const backups = [];
+                
+                for (let i = 0; i < maxBackups; i++) {
+                    const backup = localStorage.getItem(`system_backup_${i}`);
+                    if (backup) backups.push(JSON.parse(backup));
+                }
+                
+                // الاحتفاظ بأحدث النسخ فقط
+                backups.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                
+                backups.forEach((backup, index) => {
+                    if (index >= maxBackups) {
+                        localStorage.removeItem(`system_backup_${index}`);
+                    } else {
+                        localStorage.setItem(`system_backup_${index}`, JSON.stringify(backup));
+                    }
+                });
+            }
+            
+            getSystemSettings() {
+                return {
+                    useApi: localStorage.getItem('useApi') === 'true',
+                    allowedDevices: JSON.parse(localStorage.getItem('allowedDevices') || '[]'),
+                    language: localStorage.getItem('language') || 'ar',
+                    darkMode: localStorage.getItem('darkMode') === 'true'
+                };
+            }
+        }
+
+        // ========== الوظائف الأساسية للنظام ==========
+        // Set initial theme and language
+        if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+            themeButton.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        
+        if (isEnglish) {
+            switchToEnglish();
+            languageButton.textContent = 'AR';
+        }
+
+        // Set API section visibility
+        if (useApi) {
+            apiKeySection.classList.remove('hidden');
+            toggleApiBtn.classList.add('bg-purple-600');
+        }
+
+        updateTrainingCount();
+        updateTrainingHistory();
+        updateAiLevel();
+        updateAccuracyRate();
+        updateSecurityLevel();
+        updateCharts();
+        setupEventListeners();
+
+        // Event Listeners Setup
+        function setupEventListeners() {
+            teachAiButton.addEventListener('click', addTrainingExample);
+            generateButton.addEventListener('click', generateResponse);
+            copyButton.addEventListener('click', copyResponse);
+            clearDataButton.addEventListener('click', clearTrainingData);
+            exportDataButton.addEventListener('click', exportTrainingData);
+            importDataButton.addEventListener('click', () => importFileInput.click());
+            importFileInput.addEventListener('change', importTrainingData);
+            searchIssuesInput.addEventListener('input', updateTrainingHistory);
+            filterTypeSelect.addEventListener('change', updateTrainingHistory);
+            filterComplexitySelect.addEventListener('change', updateTrainingHistory);
+            newIssueInput.addEventListener('input', showSuggestions);
+            
+            complexityButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    complexityButtons.forEach(b => b.classList.remove('bg-blue-500', 'text-white'));
+                    this.classList.add('bg-blue-500', 'text-white');
+                    currentComplexity = parseInt(this.dataset.complexity);
+                    
+                    // Show department section for complex issues
+                    if (currentComplexity === 3) {
+                        departmentSection.classList.remove('hidden');
+                    } else {
+                        departmentSection.classList.add('hidden');
+                    }
+                });
+            });
+
+            ratingStars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const rating = parseInt(this.dataset.rating);
+                    setRating(rating);
+                });
+            });
+
+            saveFeedbackButton.addEventListener('click', saveFeedback);
+            
+            themeButton.addEventListener('click', toggleTheme);
+            languageButton.addEventListener('click', toggleLanguage);
+            
+            // Email thread functionality
+            addEmailButton.addEventListener('click', () => {
+                emailModal.classList.remove('hidden');
+            });
+            
+            saveEmailButton.addEventListener('click', addEmailToThread);
+            cancelEmailButton.addEventListener('click', () => {
+                emailModal.classList.add('hidden');
+                emailContent.value = '';
+            });
+            
+            assistantButton.addEventListener('click', () => {
+                showNotification('مساعد الذكاء الاصطناعي جاهز لمساعدتك!', 'info');
+            });
+            
+            // Response actions
+            deleteResponseBtn.addEventListener('click', deleteResponse);
+            replaceResponseBtn.addEventListener('click', generateResponse);
+            
+            // API toggle
+            toggleApiBtn.addEventListener('click', toggleApiSection);
+            
+            // Admin access
+            adminAccessBtn.addEventListener('click', () => {
+                const password = prompt('أدخل كلمة مرور المسؤول:');
+                if (password === 'admin123') {
+                    document.getElementById('admin-panel').classList.remove('hidden');
+                } else {
+                    showNotification('كلمة المرور غير صحيحة', 'error');
+                }
+            });
+            
+            adminBtn.addEventListener('click', () => {
+                document.getElementById('admin-panel').classList.remove('hidden');
+            });
+            
+            // Initialize medium complexity as selected
+            document.querySelector('[data-complexity="2"]').classList.add('bg-blue-500', 'text-white');
+        }
+
+        // Functions
+        function addTrainingExample() {
+            const issue = customerIssueInput.value.trim();
+            const response = yourResponseInput.value.trim();
+            const issueType = issueTypeSelect.value;
+            const department = currentComplexity === 3 ? departmentType.value : null;
+
+            if (!issue || !response) {
+                showNotification('يرجى ملء جميع الحقول', 'error');
+                return;
+            }
+
+            trainingData.push({
+                id: Date.now(),
+                issue: issue,
+                response: response,
+                issueType: issueType,
+                complexity: currentComplexity,
+                department: department,
+                timestamp: new Date().toLocaleString()
+            });
+
+            localStorage.setItem('aiTrainingData', JSON.stringify(trainingData));
+            
+            customerIssueInput.value = '';
+            yourResponseInput.value = '';
+            
+            updateTrainingCount();
+            updateTrainingHistory();
+            updateAiLevel();
+            updateAccuracyRate();
+            updateCharts();
+            
+            showNotification('تمت إضافة مثال التدريب بنجاح!', 'success');
+        }
+
+        function addEmailToThread() {
+            const sender = emailSender.value;
+            const content = emailContent.value.trim();
+            
+            if (!content) {
+                showNotification('يرجى إدخال محتوى الرسالة', 'error');
+                return;
+            }
+            
+            emailThread.push({
+                sender: sender,
+                content: content,
+                timestamp: new Date().toLocaleTimeString()
+            });
+            
+            updateEmailThreadDisplay();
+            emailContent.value = '';
+            emailModal.classList.add('hidden');
+            
+            showNotification('تمت إضافة الرسالة إلى السلسلة', 'success');
+        }
+        
+        function updateEmailThreadDisplay() {
+            if (emailThread.length === 0) {
+                emailThreadContainer.innerHTML = `
+                    <div class="text-center text-gray-500 py-4">
+                        <i class="fas fa-comments text-2xl mb-2"></i>
+                        <p>ستظهر هنا سلسلة المحادثة بعد إضافتها</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            emailThreadContainer.innerHTML = '';
+            emailThread.forEach((email, index) => {
+                const emailElement = document.createElement('div');
+                emailElement.className = 'thread-message';
+                emailElement.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <span class="font-semibold">${email.sender === 'customer' ? 'Customer' : email.sender === 'colleague' ? 'Colleague' : 'Other Department'}</span>
+                        <span class="text-xs text-gray-500">${email.timestamp}</span>
+                    </div>
+                    <p class="mt-2 text-sm">${email.content}</p>
+                    <button onclick="removeEmailFromThread(${index})" class="text-red-500 text-xs mt-2">
+                        <i class="fas fa-times"></i> Remove
+                    </button>
+                `;
+                emailThreadContainer.appendChild(emailElement);
+            });
+        }
+        
+        function removeEmailFromThread(index) {
+            emailThread.splice(index, 1);
+            updateEmailThreadDisplay();
+        }
+
+        function generateResponse() {
+            let newIssue = newIssueInput.value.trim();
+            const responseStyle = responseStyleSelect.value;
+            const responseDetail = responseDetailSelect.value;
+            const apiKey = apiKeyInput.value.trim();
+            
+            // Use thread if available, otherwise use the single issue
+            if (emailThread.length > 0) {
+                newIssue = "Email Thread:\n" + emailThread.map(email => 
+                    `${email.sender.toUpperCase()}: ${email.content}`
+                ).join('\n\n');
+            }
+            
+            if (!newIssue) {
+                showNotification('يرجى إدخال مشكلة العميل أو إضافة سلسلة محادثة', 'error');
+                return;
+            }
+
+            // إذا كان في وضع الردود الوهمية
+            if (fakeResponseMode) {
+                const fakeResponses = [
+                    "Thank you for your inquiry. We are currently processing your request and will get back to you shortly.",
+                    "We appreciate your patience. Our team is looking into your issue and will provide an update soon.",
+                    "Thank you for contacting support. We are reviewing your case and will respond with more information shortly.",
+                    "We acknowledge receipt of your message. Our support team is working on it and will follow up with you soon.",
+                    "Your request has been received. We are currently investigating and will get back to you as soon as possible."
+                ];
+                
+                const randomResponse = fakeResponses[Math.floor(Math.random() * fakeResponses.length)];
+                displayResponse(randomResponse);
+                return;
+            }
+
+            // Show loading state
+            aiResponseOutput.innerHTML = '<div class="flex items-center justify-center"><div class="loader"></div><span class="ml-3">جاري التحليل وتوليد الرد...</span></div>';
+            generateButton.disabled = true;
+            responseActions.classList.add('hidden');
+
+            // Use API if key is provided and enabled
+            if (useApi && apiKey) {
+                generateResponseWithAPI(newIssue, responseStyle, responseDetail, apiKey);
+            } else {
+                // Simulate AI processing with a shorter delay for better performance
+                setTimeout(() => {
+                    const response = generateAdvancedAiResponse(newIssue, responseStyle, responseDetail);
+                    displayResponse(response);
+                }, 1000);
+            }
+            
+            // إذا كان النص طويلاً، عرض تحليل المحتوى
+            if (newIssue.length > 500) {
+                displayContentAnalysis(newIssue);
+            }
+        }
+
+        function generateResponseWithAPI(issue, style, detail, apiKey) {
+            // This is a placeholder for API integration
+            // In a real implementation, you would call an external API here
+            console.log("Calling AI API with key:", apiKey);
+            
+            // Simulate API call with shorter delay
+            setTimeout(() => {
+                // Enhanced response when using API
+                const enhancedResponse = generateAdvancedAiResponse(issue, style, detail) + 
+                    "\n\n[تم توليد هذا الرد باستخدام ذكاء اصطناعي متقدم]";
+                displayResponse(enhancedResponse);
+            }, 1500);
+        }
+
+        function displayResponse(response) {
+            currentGeneratedResponse = response;
+            aiResponseOutput.innerHTML = `<div class="response-container fade-in">${formatResponse(response)}</div>`;
+            generateButton.disabled = false;
+            copyButton.disabled = false;
+            responseActions.classList.remove('hidden');
+            
+            // Reset rating
+            setRating(0);
+            
+            showNotification('تم توليد الرد بنجاح!', 'success');
+        }
+
+        function deleteResponse() {
+            aiResponseOutput.innerHTML = '<div class="italic text-gray-600">Your AI-generated response will appear here...</div>';
+            responseActions.classList.add('hidden');
+            currentGeneratedResponse = '';
+            showNotification('تم حذف الرد', 'info');
+        }
+
+        function toggleApiSection() {
+            useApi = !useApi;
+            localStorage.setItem('useApi', useApi);
+            
+            if (useApi) {
+                apiKeySection.classList.remove('hidden');
+                toggleApiBtn.classList.add('bg-purple-600');
+                showNotification('تم تفعيل وضع API', 'success');
+            } else {
+                apiKeySection.classList.add('hidden');
+                toggleApiBtn.classList.remove('bg-purple-600');
+                showNotification('تم إيقاف وضع API', 'info');
+            }
+        }
+
+        // Optimized version of the AI response generation
+        function generateAdvancedAiResponse(newIssue, style, detail) {
+            // 1. Simple sentiment analysis
+            const sentiment = analyzeSentiment(newIssue);
+            
+            // 2. Find similar examples with optimized search
+            const similarExamples = findSimilarExamplesOptimized(newIssue);
+            
+            // 3. Generate response based on multiple factors
+            let response = "";
+            
+            if (similarExamples.length > 0) {
+                // Use the most relevant example
+                const baseExample = similarExamples[0];
+                response = baseExample.response;
+                
+                // Add emotional tone based on sentiment
+                if (sentiment === 'negative') {
+                    response = "I apologize for the inconvenience. " + response;
+                }
+            } else {
+                // Fallback to structured email
+                response = generateStructuredEmail(newIssue, sentiment, style);
+            }
+            
+            // 4. Adjust based on detail level
+            response = adjustDetailLevel(response, detail);
+            
+            return response;
+        }
+
+        // Optimized similarity search
+        function findSimilarExamplesOptimized(newIssue) {
+            if (trainingData.length === 0) return [];
+            
+            const issueType = detectIssueType(newIssue);
+            const keywords = newIssue.split(' ').filter(word => word.length > 4);
+            
+            // Filter by issue type first to reduce search space
+            const typeMatches = trainingData.filter(example => example.issueType === issueType);
+            
+            if (typeMatches.length === 0) return [];
+            
+            // Then look for keyword matches
+            const matches = [];
+            
+            for (const example of typeMatches) {
+                let score = 0;
+                
+                for (const keyword of keywords) {
+                    if (example.issue.toLowerCase().includes(keyword.toLowerCase())) {
+                        score++;
+                    }
+                }
+                
+                if (score > 0) {
+                    matches.push({
+                        example: example,
+                        score: score
+                    });
+                }
+            }
+            
+            // Sort by score and return the examples
+            return matches.sort((a, b) => b.score - a.score)
+                         .slice(0, 3)
+                         .map(m => m.example);
+        }
+
+        function generateStructuredEmail(issue, sentiment, style) {
+            const greeting = getRandomElement(advancedTemplates.greeting).replace("[Customer Name]", "Customer");
+            const empathy = getRandomElement(advancedTemplates.empathy);
+            const collaboration = getRandomElement(advancedTemplates.collaboration);
+            const closer = getRandomElement(advancedTemplates.closer).replace("[Your Name]", "AI Support Assistant");
+            
+            // Main response body based on sentiment
+            let body = "";
+            
+            if (sentiment === 'positive') {
+                body = "Thank you for your positive feedback! We're delighted to hear about your experience and will review your request shortly.";
+            } else if (sentiment === 'negative') {
+                body = "I apologize for the inconvenience you've experienced. We are looking into this matter and will get back to you as soon as possible with a solution.";
+            } else {
+                body = "Thank you for reaching out to us. We will review your request and get back to you as soon as possible.";
+            }
+            
+            return `${greeting}\n\n${body}\n\n${collaboration}\n\n${closer}`;
+        }
+
+        function adjustDetailLevel(response, detail) {
+            switch(detail) {
+                case 'short':
+                    // Keep only the first paragraph
+                    const paragraphs = response.split('\n\n');
+                    return paragraphs[0];
+                case 'medium':
+                    return response;
+                case 'detailed':
+                    return response + "\n\nPlease don't hesitate to reach out if you have any additional questions or concerns.";
+                default:
+                    return response;
+            }
+        }
+
+        function formatResponse(response) {
+            return response.replace(/\n/g, '<br>');
+        }
+
+        function getRandomElement(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function analyzeSentiment(text) {
+            const positiveWords = ['thank', 'thanks', 'appreciate', 'excellent', 'great', 'good', 'awesome', 'happy', 'pleased', 'satisfied'];
+            const negativeWords = ['problem', 'issue', 'error', 'bug', 'slow', 'bad', 'terrible', 'angry', 'frustrated', 'disappointed', 'upset'];
+            
+            let score = 0;
+            const words = text.toLowerCase().split(' ');
+            
+            for (const word of words) {
+                if (positiveWords.some(p => word.includes(p))) score++;
+                if (negativeWords.some(n => word.includes(n))) score--;
+            }
+            
+            if (score > 0) return 'positive';
+            if (score < 0) return 'negative';
+            return 'neutral';
+        }
+
+        function analyzeOverallSentiment(text) {
+            const positiveWords = ['thank', 'thanks', 'appreciate', 'excellent', 'great', 'good', 'awesome', 'happy', 'pleased', 'satisfied'];
+            const negativeWords = ['problem', 'issue', 'error', 'bug', 'slow', 'bad', 'terrible', 'angry', 'frustrated', 'disappointed', 'upset'];
+            
+            let score = 0;
+            const words = text.toLowerCase().split(' ');
+            
+            for (const word of words) {
+                if (positiveWords.some(p => word.includes(p))) score++;
+                if (negativeWords.some(n => word.includes(n))) score--;
+            }
+            
+            if (score > 3) return 'positive';
+            if (score < -3) return 'negative';
+            return 'neutral';
+        }
+
+        function detectIssueType(issue) {
+            if (issue.includes('payment') || issue.includes('bill') || issue.includes('invoice') || issue.includes('charge') || issue.includes('refund')) 
+                return 'billing';
+            if (issue.includes('account') || issue.includes('password') || issue.includes('login') || issue.includes('sign up') || issue.includes('register')) 
+                return 'account';
+            if (issue.includes('error') || issue.includes('bug') || issue.includes('crash') || issue.includes('not working') || issue.includes('broken')) 
+                return 'technical';
+            return 'general';
+        }
+
+        function categorizeParagraph(paragraph) {
+            if (paragraph.includes('payment') || paragraph.includes('bill') || paragraph.includes('invoice') || paragraph.includes('charge') || paragraph.includes('refund')) 
+                return 'billing';
+            if (paragraph.includes('account') || paragraph.includes('password') || paragraph.includes('login') || paragraph.includes('sign up') || paragraph.includes('register')) 
+                return 'account';
+            if (paragraph.includes('error') || paragraph.includes('bug') || paragraph.includes('crash') || paragraph.includes('not working') || paragraph.includes('broken')) 
+                return 'technical';
+            if (paragraph.includes('complaint') || paragraph.includes('unhappy') || paragraph.includes('disappointed') || paragraph.includes('frustrated')) 
+                return 'complaint';
+            return 'general';
+        }
+
+        function extractKeywords(text) {
+            const words = text.toLowerCase()
+                .replace(/[^\w\s]/gi, '')
+                .split(/\s+/)
+                .filter(word => word.length > 3);
+            
+            const stopWords = ['the', 'and', 'for', 'with', 'this', 'that', 'from', 'your', 'have', 'has', 'was', 'were', 'they', 'their'];
+            const filteredWords = words.filter(word => !stopWords.includes(word));
+            
+            // حساب تكرار الكلمات
+            const wordCount = {};
+            filteredWords.forEach(word => {
+                wordCount[word] = (wordCount[word] || 0) + 1;
+            });
+            
+            // ترتيب الكلمات حسب التكرار
+            return Object.entries(wordCount)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10)
+                .map(entry => entry[0]);
+        }
+
+        function calculateSimilarity(keywords1, keywords2) {
+            const commonKeywords = keywords1.filter(keyword => keywords2.includes(keyword));
+            return commonKeywords.length / Math.max(keywords1.length, keywords2.length);
+        }
+
+        function mergeKeywords(keywords1, keywords2) {
+            const merged = [...new Set([...keywords1, ...keywords2])];
+            return merged.slice(0, 10);
+        }
+
+        function setRating(rating) {
+            ratingStars.forEach(star => {
+                const starRating = parseInt(star.dataset.rating);
+                if (starRating <= rating) {
+                    star.classList.add('active');
+                    star.classList.remove('text-gray-300');
+                } else {
+                    star.classList.remove('active');
+                    star.classList.add('text-gray-300');
+                }
+            });
+        }
+
+        function saveFeedback() {
+            const response = aiResponseOutput.textContent;
+            let rating = 0;
+            
+            ratingStars.forEach(star => {
+                if (star.classList.contains('active')) {
+                    rating = Math.max(rating, parseInt(star.dataset.rating));
+                }
+            });
+            
+            if (rating === 0) {
+                showNotification('يرجى اختيار تقييم للرد', 'error');
+                return;
+            }
+            
+            aiFeedback.push({
+                response: response,
+                rating: rating,
+                timestamp: new Date().toLocaleString()
+            });
+            
+            localStorage.setItem('aiFeedback', JSON.stringify(aiFeedback));
+            
+            updateAccuracyRate();
+            showNotification('تم حفظ التقييم بنجاح!', 'success');
+        }
+
+        function copyResponse() {
+            navigator.clipboard.writeText(currentGeneratedResponse)
+                .then(() => showNotification('تم نسخ الرد إلى الحافظة!', 'success'))
+                .catch(() => showNotification('فشل في نسخ النص', 'error'));
+        }
+
+        function clearTrainingData() {
+            if (confirm('هل أنت متأكد أنك تريد مسح جميع بيانات التدريب؟ لا يمكن التراجع عن هذا الإجراء.')) {
+                trainingData = [];
+                aiFeedback = [];
+                localStorage.removeItem('aiTrainingData');
+                localStorage.removeItem('aiFeedback');
+                updateTrainingCount();
+                updateTrainingHistory();
+                updateAiLevel();
+                updateAccuracyRate();
+                updateCharts();
+                showNotification('تم مسح جميع بيانات التدريب', 'info');
+            }
+        }
+
+        function exportTrainingData() {
+            const dataStr = JSON.stringify(trainingData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = 'training-data.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showNotification('تم تصدير بيانات التدريب بنجاح', 'success');
+        }
+
+        function exportAllData() {
+            const allData = {
+                trainingData: trainingData,
+                aiFeedback: aiFeedback,
+                settings: {
+                    useApi: useApi,
+                    allowedDevices: JSON.parse(localStorage.getItem('allowedDevices') || '[]'),
+                    language: isEnglish ? 'en' : 'ar',
+                    darkMode: isDarkMode
+                },
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(allData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = 'ai-support-system-backup.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showNotification('تم تصدير جميع بيانات النظام بنجاح', 'success');
+        }
+
+        function importTrainingData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (Array.isArray(importedData)) {
+                        trainingData = importedData;
+                        localStorage.setItem('aiTrainingData', JSON.stringify(trainingData));
+                        updateTrainingCount();
+                        updateTrainingHistory();
+                        updateAiLevel();
+                        updateAccuracyRate();
+                        updateCharts();
+                        showNotification('تم استيراد بيانات التدريب بنجاح', 'success');
+                    } else {
+                        showNotification('ملف غير صحيح', 'error');
+                    }
+                } catch (error) {
+                    showNotification('فشل في استيراد الملف', 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // Reset input
+        }
+
+        function updateTrainingCount() {
+            trainingCountElement.textContent = trainingData.length;
+        }
+
+        function updateAiLevel() {
+            const levelIndex = Math.min(Math.floor(trainingData.length / 5), aiLevels.length - 1);
+            aiLevelElement.textContent = aiLevels[levelIndex];
+            aiLevelElement.className = `text-2xl font-bold ${
+                levelIndex === 0 ? 'text-gray-600' :
+                levelIndex === 1 ? 'text-green-600' :
+                levelIndex === 2 ? 'text-blue-600' :
+                levelIndex === 3 ? 'text-purple-600' : 'text-orange-600'
+            }`;
+        }
+
+        function updateAccuracyRate() {
+            if (aiFeedback.length === 0) {
+                accuracyRateElement.textContent = '0%';
+                return;
+            }
+            
+            const totalRating = aiFeedback.reduce((sum, feedback) => sum + feedback.rating, 0);
+            const averageRating = totalRating / aiFeedback.length;
+            const accuracy = Math.round((averageRating / 5) * 100);
+            
+            accuracyRateElement.textContent = `${accuracy}%`;
+        }
+
+        function updateCharts() {
+            updateIssueTypeChart();
+            updateComplexityChart();
+        }
+
+        function updateIssueTypeChart() {
+            const ctx = document.getElementById('issue-type-chart').getContext('2d');
+            
+            //Count issues by type
+            const typeCounts = {
+                technical: 0,
+                billing: 0,
+                account: 0,
+                general: 0
+            };
+            
+            trainingData.forEach(example => {
+                typeCounts[example.issueType]++;
+            });
+            
+            // Create or update chart
+            if (window.issueTypeChart) {
+                window.issueTypeChart.data.datasets[0].data = Object.values(typeCounts);
+                window.issueTypeChart.update();
+            } else {
+                window.issueTypeChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: Object.keys(typeCounts).map(type => issueTypes[type]),
+                        datasets: [{
+                            data: Object.values(typeCounts),
+                            backgroundColor: ['#4f46e5', '#10b981', '#f59e0b', '#ef4444']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function updateComplexityChart() {
+            const ctx = document.getElementById('complexity-chart').getContext('2d');
+            
+            // Count issues by complexity
+            const complexityCounts = [0, 0, 0, 0]; // index 0 unused
+            
+            trainingData.forEach(example => {
+                if (example.complexity >= 1 && example.complexity <= 3) {
+                    complexityCounts[example.complexity]++;
+                }
+            });
+            
+            const data = complexityCounts.slice(1); // Remove index 0
+            
+            // Create or update chart
+            if (window.complexityChart) {
+                window.complexityChart.data.datasets[0].data = data;
+                window.complexityChart.update();
+            } else {
+                window.complexityChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['سهلة', 'متوسطة', 'صعبة'],
+                        datasets: [{
+                            data: data,
+                            backgroundColor: ['#10b981', '#f59e0b', '#ef4444']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function updateTrainingHistory() {
+            const searchText = searchIssuesInput.value.toLowerCase();
+            const filterType = filterTypeSelect.value;
+            const filterComplexity = parseInt(filterComplexitySelect.value);
+            
+            if (trainingData.length === 0) {
+                trainingHistoryContainer.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-inbox text-4xl mb-3"></i>
+                        <p>لا توجد بيانات تدريب حتى الآن. ابدأ بتدريب الذكاء الاصطناعي بإضافة أمثلة أعلاه.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const filteredData = trainingData.filter(example => {
+                const matchesSearch = example.issue.toLowerCase().includes(searchText) || 
+                                    example.response.toLowerCase().includes(searchText);
+                const matchesType = filterType === 'all' || example.issueType === filterType;
+                const matchesComplexity = filterComplexity === 0 || example.complexity === filterComplexity;
+                
+                return matchesSearch && matchesType && matchesComplexity;
+            });
+
+            if (filteredData.length === 0) {
+                trainingHistoryContainer.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-search text-4xl mb-3"></i>
+                        <p>لا توجد نتائج تطابق معايير البحث الخاصة بك.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            trainingHistoryContainer.innerHTML = filteredData.slice().reverse().map(example => `
+                <div class="glass-container rounded-lg p-4 fade-in">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-sm text-gray-500">${example.timestamp}</span>
+                        <span class="text-xs px-2 py-1 rounded-full ${example.complexity === 1 ? 'bg-green-100 text-green-800' : example.complexity === 2 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}">${complexityLevels[example.complexity]}</span>
+                    </div>
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-sm text-gray-500">${issueTypes[example.issueType]}</span>
+                        ${example.department ? `<span class="department-tag">${example.department}</span>` : ''}
+                        <button onclick="deleteExample(${example.id})" class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="mb-2">
+                        <strong class="text-sm text-gray-700">المشكلة:</strong>
+                        <p class="text-gray-600 dark:text-gray-300">${example.issue}</p>
+                    </div>
+                    <div>
+                        <strong class="text-sm text-gray-700">الرد:</strong>
+                        <p class="text-gray-600 dark:text-gray-300">${example.response}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteExample(id) {
+            trainingData = trainingData.filter(example => example.id !== id);
+            localStorage.setItem('aiTrainingData', JSON.stringify(trainingData));
+            updateTrainingCount();
+            updateTrainingHistory();
+            updateAiLevel();
+            updateAccuracyRate();
+            updateCharts();
+            showNotification('تم حذف المثال بنجاح', 'info');
+        }
+
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                themeButton.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.body.classList.remove('dark-mode');
+                themeButton.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        }
+
+        function toggleLanguage() {
+            isEnglish = !isEnglish;
+            localStorage.setItem('language', isEnglish ? 'en' : 'ar');
+            
+            if (isEnglish) {
+                switchToEnglish();
+                languageButton.textContent = 'AR';
+            } else {
+                switchToArabic();
+                languageButton.textContent = 'EN';
+            }
+        }
+
+        function switchToEnglish() {
+            document.documentElement.lang = 'en';
+            document.documentElement.dir = 'ltr';
+            
+            // Update UI texts to English
+            document.querySelector('title').textContent = 'Advanced Customer Support Assistant - Quantum AI';
+            document.querySelector('header h1').textContent = 'Advanced Customer Support Assistant - Quantum AI';
+            document.querySelector('header p').textContent = 'Quantum-Neural intelligent system for handling complex communication scenarios';
+            
+            // Update other UI elements as needed...
+        }
+
+        function switchToArabic() {
+            document.documentElement.lang = 'ar';
+            document.documentElement.dir = 'rtl';
+            
+            // Update UI texts to Arabic
+            document.querySelector('title').textContent = 'نظام دعم العملاء المتقدم - الذكاء الاصطناعي الكمي';
+            document.querySelector('header h1').textContent = 'نظام دعم العملاء المتقدم - الذكاء الاصطناعي الكمي';
+            document.querySelector('header p').textContent = 'نظام ذكي كمي-عصبي لمعالجة سيناريوهات المراسلات المعقدة';
+        }
+
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600'}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => notification.classList.add('show'), 10);
+            
+            // Animate out and remove
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        function moveToNext(input) {
+            const maxLength = parseInt(input.getAttribute('maxlength'));
+            const currentLength = input.value.length;
+            
+            if (currentLength >= maxLength) {
+                const nextInput = input.nextElementSibling;
+                if (nextInput) {
+                    nextInput.focus();
+                }
+            }
+        }
+
+        // تهيئة جميع الأنظمة بعد تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', async function() {
+            // التهيئة الأساسية
+            await generateDeviceId();
+            
+            // تهيئة الأنظمة الجديدة
+            const backupSystem = new QuantumBackupSystem();
+            backupSystem.init();
+            
+            // التحقق من إذن الجهاز
+            checkDevicePermission();
+            
+            // تحميل البيانات
+            updateTrainingCount();
+            updateTrainingHistory();
+            updateAiLevel();
+            updateAccuracyRate();
+            updateSecurityLevel();
+            updateCharts();
+            
+            // إعداد واجهة المستخدم
+            if (fakeResponseMode) {
+                document.getElementById('teach-ai-btn').disabled = true;
+                document.getElementById('clear-data-btn').disabled = true;
+                document.getElementById('export-data-btn').disabled = true;
+                document.getElementById('import-data-btn').disabled = true;
+            }
+        });
+
+        // Make functions available globally for HTML onclick
+        window.deleteExample = deleteExample;
+        window.removeEmailFromThread = removeEmailFromThread;
+    </script>
+</body>
+</html>
